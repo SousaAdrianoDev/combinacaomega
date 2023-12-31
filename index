@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Exemplo de código html5</title>
+    <script>
+        // Função para armazenar um vetor de 6 elementos no localStorage
+        function armazenarVetor() {
+            // Obter o valor do campo de entrada
+            var vetor = document.getElementById("vetor1").value;
+            // Converter o valor em um array de números
+            vetor = vetor.split(",").map(Number);
+            // Verificar se o vetor tem 6 elementos
+            if (vetor.length != 6) {
+                alert("O vetor deve ter 6 elementos!");
+                return;
+            }
+            // Gerar uma chave única para o vetor
+            var chave = "vetor" + Date.now();
+            // Armazenar o vetor no localStorage
+            localStorage.setItem(chave, JSON.stringify(vetor));
+            // Limpar o campo de entrada
+            document.getElementById("vetor1").value = "";
+            // Mostrar uma mensagem de sucesso
+            alert("Vetor armazenado com sucesso!");
+        }
+
+        // Função para comparar um vetor de 6 elementos com os vetores salvos no localStorage
+        function compararVetor() {
+            // Obter o valor do campo de entrada
+            var vetor = document.getElementById("vetor2").value;
+            // Converter o valor em um array de números
+            vetor = vetor.split(",").map(Number);
+            // Verificar se o vetor tem 6 elementos
+            if (vetor.length != 6) {
+                alert("O vetor deve ter 6 elementos!");
+                return;
+            }
+            // Obter todas as chaves do localStorage
+            var chaves = Object.keys(localStorage);
+            // Variável para armazenar o resultado da comparação
+            var resultado = false;
+            // Percorrer todas as chaves
+            for (var i = 0; i < chaves.length; i++) {
+                // Obter o vetor salvo na chave atual
+                var vetorSalvo = JSON.parse(localStorage.getItem(chaves[i]));
+                // Comparar o vetor com o vetor salvo
+                var igual = true;
+                for (var j = 0; j < 6; j++) {
+                    if (vetor[j] != vetorSalvo[j]) {
+                        igual = false;
+                        break;
+                    }
+                }
+                // Se os vetores forem iguais, atualizar o resultado e sair do loop
+                if (igual) {
+                    resultado = true;
+                    break;
+                }
+            }
+            // Mostrar uma mensagem de acordo com o resultado
+            if (resultado) {
+                alert("O vetor é igual a um dos vetores salvos!");
+            } else {
+                alert("O vetor é diferente de todos os vetores salvos!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Exemplo de código html5</h1>
+    <p>Insira um vetor de 6 elementos separados por vírgulas nos campos abaixo.</p>
+    <p>Exemplo: 1,2,3,4,5,6</p>
+    <div>
+        <label for="vetor1">Vetor 1:</label>
+        <input type="text" id="vetor1">
+        <button onclick="armazenarVetor()">Armazenar</button>
+    </div>
+    <div>
+        <label for="vetor2">Vetor 2:</label>
+        <input type="text" id="vetor2">
+        <button onclick="compararVetor()">Comparar</button>
+    </div>
+</body>
+</html>
